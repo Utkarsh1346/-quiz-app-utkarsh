@@ -11,7 +11,7 @@ const questions = [
   },
   {
     question: "What does HTML stand for?",
-    options: ["Hyper Text Markup Language", "High Text Machine Language", "Hyperlink Text Markup Language", "None"],
+    options: ["Hyper Text Markup Language", "High Text Machine Language", "Hyperlink Text Markup Language", "None of these"],
     answer: "Hyper Text Markup Language"
   }
 ];
@@ -22,16 +22,29 @@ let score = 0;
 const questionEl = document.getElementById("question");
 const optionsEl = document.getElementById("options");
 const nextBtn = document.getElementById("next-btn");
+const restartBtn = document.getElementById("restart-btn");
+const scoreEl = document.getElementById("score");
 
 function showQuestion() {
   const q = questions[currentQuestion];
   questionEl.textContent = q.question;
   optionsEl.innerHTML = "";
+  scoreEl.textContent = "";
+
   q.options.forEach(option => {
     const li = document.createElement("li");
-    li.innerHTML = `<input type="radio" name="option" value="${option}" /> ${option}`;
+    li.innerHTML = `<label><input type="radio" name="option" value="${option}" /> ${option}</label>`;
     optionsEl.appendChild(li);
   });
+}
+
+function showScore() {
+  const percent = Math.round((score / questions.length) * 100);
+  questionEl.textContent = "Quiz Completed!";
+  optionsEl.innerHTML = "";
+  scoreEl.innerHTML = `You scored ${score} out of ${questions.length} (${percent}%)`;
+  nextBtn.style.display = "none";
+  restartBtn.style.display = "inline-block";
 }
 
 nextBtn.addEventListener("click", () => {
@@ -49,10 +62,16 @@ nextBtn.addEventListener("click", () => {
   if (currentQuestion < questions.length) {
     showQuestion();
   } else {
-    questionEl.textContent = `You scored ${score} out of ${questions.length}`;
-    optionsEl.innerHTML = "";
-    nextBtn.style.display = "none";
+    showScore();
   }
+});
+
+restartBtn.addEventListener("click", () => {
+  currentQuestion = 0;
+  score = 0;
+  nextBtn.style.display = "inline-block";
+  restartBtn.style.display = "none";
+  showQuestion();
 });
 
 showQuestion();
