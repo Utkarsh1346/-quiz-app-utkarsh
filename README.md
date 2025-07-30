@@ -1,4 +1,4 @@
-# -quiz-app-utkarsh
+# quiz App by Utkarsh
 Quiz App
 <BR>
 
